@@ -62,18 +62,6 @@
                 height: 80px;
                 border: 5px solid #fff;
             }
-
-
-            .gd{
-            background: #2c539e;
-background: -moz-radial-gradient(center, ellipse cover,  #2c539e 0%, #2c539e 100%);
-background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#2c539e), color-stop(100%,#2c539e));
-background: -webkit-radial-gradient(center, ellipse cover,  #2c539e 0%,#2c539e 100%);
-background: -o-radial-gradient(center, ellipse cover,  #2c539e 0%,#2c539e 100%);
-background: -ms-radial-gradient(center, ellipse cover,  #2c539e 0%,#2c539e 100%);
-background: radial-gradient(ellipse at center,  #2c539e 0%,#2c539e 100%);
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2c539e', endColorstr='#2c539e',GradientType=1 );
-}
         </style>
 
     </head>
@@ -82,13 +70,27 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2c539e', end
     <body>
         <!--        <div id="google_translate_element"></div>-->
 
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="">
+                        ทันจิตต์ทัวร์
+                        <!--<img alt="Brand" src="assets/images/Logo1.png" style=" height: 30px;">-->
+                    </a>
+                </div>
+            </div>
+        </nav>
 
-        <div class="gd" style=" width: 100%; height: 60px; text-align: center;">
-            <img style=" float: left;" height="50" src="assets/images/Logo1.png" alt=""/>
-            <h1 style="color: #f00; float: left;">Thunjit.com</h1>
-        </div>
-        
+
         <div class="container">
+
+            <div class="row well" style=" text-align: center;">
+                <img height="100" src="assets/images/Logo1.png" alt=""/>
+                <h4>ยินดีต้อนรับเข้าสู่ Thunjit.com</h4>
+                <p>Van staion ที่นี่คือสถานีให้บริการจองตั๋วรถตู้ออนไลน์</p>
+            </div>
+
+
             <div class="row"></div>
             <div class="row">
                 <div class="col-sm-6">
@@ -100,13 +102,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2c539e', end
                     </div>
                 </div>
                 <div class="col-sm-6">
-                    <a href="TicketBooking/index" container="#container">จองตั๋วรถง่ายๆ ครับ</a><br>
+                    <a href="TicketBooking/index" container="#container">จองตั๋วรถง่ายๆ กดที่นี่</a><br>
                     <a>แสดงความคิดเห็น</a>
                 </div>
             </div>
             <div class="row" id="container"></div>
         </div>
-        
+
 
     </body>
 </html>
