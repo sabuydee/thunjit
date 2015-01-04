@@ -1,0 +1,38 @@
+.ivan14{ 
+    position: relative; 
+    width: 300px; height: 540px;
+    background-image: url(image/van-top-diagram3.png);
+    background-repeat: no-repeat;
+}
+.ivan14>.seat,
+.ivan14>.seat-free{ 
+    position: absolute; 
+    width: 39px; height: 44px; 
+    background-image: url(image/seat1.png);
+    cursor: pointer;
+    color: #fff;
+    text-align: center;
+}
+.ivan14>.seat-active{
+    background-image: url(image/seat2.png);
+}
+.ivan14>.seat-booking{
+    background-image: url(image/seat4.png);
+}
+.ivan14>.not-allow{
+    cursor: not-allowed;
+}
+.ivan14>#seat01{ left: 50px; top: 170px; }
+.ivan14>#seat02{ left: 100px; top: 240px; }
+.ivan14>#seat03{ left: 150px; top: 240px; }
+.ivan14>#seat04{ left: 200px; top: 240px; }
+.ivan14>#seat05{ left: 50px; top: 310px; }
+.ivan14>#seat06{ left: 150px; top: 310px; }
+.ivan14>#seat07{ left: 200px; top: 310px; }
+.ivan14>#seat08{ left: 50px; top: 380px; }
+.ivan14>#seat09{ left: 150px; top: 380px; }
+.ivan14>#seat10{ left: 200px; top: 380px; }
+.ivan14>#seat11{ left: 50px; top: 450px; }
+.ivan14>#seat12{ left: 100px; top: 450px; }
+.ivan14>#seat13{ left: 150px; top: 450px; }
+.ivan14>#seat14{ left: 200px; top: 450px; }
