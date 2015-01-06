@@ -82,8 +82,8 @@ class Service {
         return $x;
     }
 
-    public function get_option_tag_province_source_has_route($selected = FALSE) {
-
+    public function get_all_province_source() {
+        
         $station_source_id_array = array();
         foreach ($this->CI->ModelRoute->select_station_source()->result() as $value) {
 
@@ -96,11 +96,7 @@ class Service {
             $province_id_array[] = $value->province_id;
         }
 
-        $this->CI->hoption->data = $this->CI->ModelProvince->select_where_in($province_id_array)->result_array();
-        $this->CI->hoption->index = 'id';
-        $this->CI->hoption->title = 'province_name';
-        $this->CI->hoption->selected = $selected;
-        return $this->CI->hoption->get();
+        return $this->CI->ModelProvince->select_where_in($province_id_array)->result_array();
     }
 
     public function get_option_tag_province_destination_has_route($selected = FALSE) {
@@ -124,21 +120,14 @@ class Service {
         return $this->CI->hoption->get();
     }
 
-    public function get_table_station_source_for_select($provice_id = FALSE) {
+    public function get_station_source_by_provice_id($provice_id) {
 
+        
         $station_source_id_array = array();
         foreach ($this->CI->ModelRoute->select_station_source()->result() as $value) {
 
             $station_source_id_array[] = $value->station_source;
         }
-
-        $column = array(
-            'เลือกท่ารถ' => array('
-                <a onclick="return set_station_source(\'', 'station_id', '\',\'', 'station_name', '\')" href="', 'Ticket/get_station_souce/station_id', '" type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">
-                    <span class="glyphicon glyphicon-ok"></span> เลือก
-                </a>
-                ', nbs(3), 'station_name'),
-        );
 
         $this->CI->htable->data = $this->CI->ModelStation->select_where_province_id_and_where_in($provice_id, $station_source_id_array)->result_array();
         $this->CI->htable->column = $column;
