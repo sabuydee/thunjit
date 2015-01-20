@@ -6,6 +6,12 @@ define('GROUP_MANAGER', 3);
 define('GROUP_EMPLOYEE', 4);
 define('GROUP_USER', 5);
 
+define('TIME_ALLOW_BOOKING', 3);
+
+define('TICKET_BOOKING', 'ticket_booking');
+define('TICKET_SUCCEED', 'ticket_succeed');
+define('TICKET_CANCEL', 'ticket_cancel');
+
 
 
 

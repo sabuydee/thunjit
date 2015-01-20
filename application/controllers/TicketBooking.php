@@ -7,21 +7,33 @@ if (!defined('BASEPATH'))
 
 class TicketBooking extends CI_Controller {
 
+    public function get_date($station_source_id, $station_destination_id) {
+        
+        echo json_encode($this->service->get_date($station_source_id, $station_destination_id)->result_array());
+    }
+       
+    public function get_station_destination($station_source_id, $province_destination_id) {
+        
+        echo json_encode($this->service->get_station_destination($station_source_id, $province_destination_id)->result_array());
+    }
+    
+    public function get_station_source($province_source_id, $province_destination_id) {
+        
+        echo json_encode($this->service->get_station_source($province_source_id, $province_destination_id)->result_array());
+    } 
+    
+    public function get_province_destination($province_source_id) {
+        
+        echo json_encode($this->service->get_province_destination($province_source_id)->result_array());
+    }
+    
+    public function get_province_source() {
+        
+        echo json_encode($this->service->get_province_source()->result_array());
+    }
+    
     public function index() {
-
+        
         $this->load->view('TicketBooking/Index');
-    }
-    
-    public function province_source() {
-        
-        $this->hoption->data = $this->service->get_all_province_source();
-        $this->hoption->index = 'id';
-        $this->hoption->title = 'province_name';
-        echo $this->hoption->get();
-    }
-    
-    public function station_source($pv_s) {
-        
-        echo $pv_s;
     }
 }

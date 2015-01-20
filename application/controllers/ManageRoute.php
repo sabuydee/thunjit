@@ -9,7 +9,7 @@ class ManageRoute extends CI_Controller {
 
     public function index() {
 
-        $data['routes'] = $this->ModelRoute->getAll();
+        $data['routes'] = $this->ModelRoute->select();
         $this->load->view('ManageRoute/Index', $data);
     }
 

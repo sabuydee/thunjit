@@ -56,8 +56,6 @@
     $this->dropdown->title = "ระบบการเดินรถ";
     $this->dropdown->class = 'btn label-info';
     $this->dropdown->list = array(
-        array('title' => 'จัดการท่ารถ และจุดจอดรถ',
-            'attr' => 'href="ManageStation/Index" container="#container"'),
         array('title' => 'จัดการเส้นทางเดินรถ',
             'attr' => 'href="ManageRoute/Index" container="#container"'),
     );

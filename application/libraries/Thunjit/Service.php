@@ -15,209 +15,160 @@ class Service {
 
     public $CI;
     
-    public function stamp_to_date($stamp = FALSE) {
+    public function seat_booking($travel_id, $seat_booking, $card_id, $tel, $passsenger, $gender_id) {
         
-        if($stamp)
-            return date('Y-m-d H:i:s', $stamp);
-        else
-            return date('Y-m-d H:i:s');;
-    }
-
-    public function get_option_tag_time() {
-        
-        $times = array(
-            array('val' => '05:00:00', 'title' => '05:00 น'),
-            array('val' => '06:00:00', 'title' => '06:00 น'),
-            array('val' => '07:30:00', 'title' => '07:30 น'),
-            array('val' => '09:00:00', 'title' => '09:00 น'),
-            array('val' => '10:30:00', 'title' => '10:30 น'),
-            array('val' => '12:00:00', 'title' => '12:00 น'),
-            array('val' => '14:00:00', 'title' => '14:00 น'),
-            array('val' => '16:00:00', 'title' => '16:00 น'),
-            array('val' => '18:00:00', 'title' => '18:00 น'),
-            array('val' => '19:00:00', 'title' => '19:00 น')
-        );
-        $this->CI->hoption->data = $times;
-        $this->CI->hoption->index = 'val';
-        $this->CI->hoption->title = 'title';
-        $this->CI->hoption->selected = '05:00:00';
-        return $this->CI->hoption->get();
-    }
-
-    public function get_seat($travel_id = FALSE) {
-        $booking = NULL;
-        $booking = array(
-            "seat01" => '{status: "seat-free", change: "allow"}',
-            "seat02" => '{status: "seat-free", change: "allow"}',
-            "seat03" => '{status: "seat-free", change: "allow"}',
-            "seat04" => '{status: "seat-free", change: "allow"}',
-            "seat05" => '{status: "seat-free", change: "allow"}',
-            "seat06" => '{status: "seat-free", change: "allow"}',
-            "seat07" => '{status: "seat-free", change: "allow"}',
-            "seat08" => '{status: "seat-free", change: "allow"}',
-            "seat09" => '{status: "seat-free", change: "allow"}',
-            "seat10" => '{status: "seat-free", change: "allow"}',
-            "seat11" => '{status: "seat-free", change: "allow"}',
-            "seat12" => '{status: "seat-free", change: "allow"}',
-            "seat13" => '{status: "seat-free", change: "allow"}',
-            "seat14" => '{status: "seat-free", change: "allow"}',
-        );
-
-        foreach ($this->CI->ModelTicket->select_where_travel_id($travel_id)->result() as $value) {
-
-            if ($value->ticket_status_id == 1)
-                $booking[$value->ticket_seat] = '{status: "seat-free", change: "allow"}';
-            if ($value->ticket_status_id == 2)
-                $booking[$value->ticket_seat] = '{status: "seat-active", change: "not-allow"}';
-            if ($value->ticket_status_id == 3)
-                $booking[$value->ticket_seat] = '{status: "seat-active", change: "not-allow"}';
-            if ($value->ticket_status_id == 4)
-                $booking[$value->ticket_seat] = '{status: "seat-free", change: "allow"}';
-        }
-        $x = NULL;
-        foreach ($booking as $key => $value) {
-
-            $x .= '"' . $key . '": ' . $value . ',';
-        }
-        return $x;
-    }
-
-    public function get_all_province_source() {
-        
-        $station_source_id_array = array();
-        foreach ($this->CI->ModelRoute->select_station_source()->result() as $value) {
-
-            $station_source_id_array[] = $value->station_source;
-        }
-
-        $province_id_array = array();
-        foreach ($this->CI->ModelStation->select_where_in($station_source_id_array)->result() as $value) {
-
-            $province_id_array[] = $value->province_id;
-        }
-
-        return $this->CI->ModelProvince->select_where_in($province_id_array)->result_array();
-    }
-
-    public function get_option_tag_province_destination_has_route($selected = FALSE) {
-
-        $station_destination_id_array = array();
-        foreach ($this->CI->ModelRoute->select_station_destination()->result() as $value) {
-
-            $station_destination_id_array[] = $value->station_destination;
-        }
-
-        $province_id_array = array();
-        foreach ($this->CI->ModelStation->select_where_in($station_destination_id_array)->result() as $value) {
-
-            $province_id_array[] = $value->province_id;
-        }
-
-        $this->CI->hoption->data = $this->CI->ModelProvince->select_where_in($province_id_array)->result_array();
-        $this->CI->hoption->index = 'id';
-        $this->CI->hoption->title = 'province_name';
-        $this->CI->hoption->selected = $selected;
-        return $this->CI->hoption->get();
-    }
-
-    public function get_station_source_by_provice_id($provice_id) {
-
-        
-        $station_source_id_array = array();
-        foreach ($this->CI->ModelRoute->select_station_source()->result() as $value) {
-
-            $station_source_id_array[] = $value->station_source;
-        }
-
-        $this->CI->htable->data = $this->CI->ModelStation->select_where_province_id_and_where_in($provice_id, $station_source_id_array)->result_array();
-        $this->CI->htable->column = $column;
-        $this->CI->htable->enableIndex = FALSE;
-        $this->CI->htable->msNoData = 'ไม่มีข้อมูล';
-        return $this->CI->htable->get();
-    }
-
-    public function get_table_station_destination_for_select($provice_id = FALSE) {
-
-        $station_destination_id_array = array();
-        foreach ($this->CI->ModelRoute->select_station_destination()->result() as $value) {
-
-            $station_destination_id_array[] = $value->station_destination;
-        }
-
-        $column = array(
-            'เลือกท่ารถ' => array('
-                <a onclick="return set_station_destination(\'', 'station_id', '\',\'', 'station_name', '\')" href="', 'Ticket/get_station_souce/station_id', '" type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">
-                    <span class="glyphicon glyphicon-ok"></span> เลือก
-                </a>
-                ', nbs(3), 'station_name'),
-        );
-
-        $this->CI->htable->data = $this->CI->ModelStation->select_where_province_id_and_where_in($provice_id, $station_destination_id_array)->result_array();
-        $this->CI->htable->column = $column;
-        $this->CI->htable->enableIndex = FALSE;
-        $this->CI->htable->msNoData = 'ไม่มีข้อมูล';
-        return $this->CI->htable->get();
-    }
-
-    public function get_province_as_option_tag($selected = FALSE) {
-
-        $this->CI->hoption->data = $this->CI->ModelProvince->select()->result_array();
-        $this->CI->hoption->index = 'id';
-        $this->CI->hoption->title = 'province_name';
-        $this->CI->hoption->selected = $selected;
-        return $this->CI->hoption->get();
-    }
-
-    public function removeRoute($routeID) {
-
         $this->CI->db->trans_begin();
+        
+        $users = $this->CI->ModelUser->select_where_user_card_id($card_id);
+        if($users->num_rows() <= 0){            
+            $this->CI->db->insert('user', array(
+                'user_group_id' => $this->CI->ModelUserGroup->select_where_user_group_name("Customer")->row()->id,
+                'gender_id' => $gender_id,
+                'province_id' => 1,
+                'user_active' => TRUE,
+                'user_username' => $card_id,
+                'user_password' => $card_id,    
+                'user_card_id' => $card_id,
+                'user_nickname' => $passsenger,
+                'user_tel' => $tel
+            ));
+            $process['user_id'] = $this->CI->db->insert_id();
+        }else{            
+            $process['user_id'] = $users->row()->user_id;
+        }
+        
+        $this->CI->db->insert('booking', array(
+            'user_id' => $process['user_id']
+        ));
+        $process['booking_id'] = $this->CI->db->insert_id();
+        
+        $process['seat_booking'] = explode(",", $seat_booking);
+        foreach ($process['seat_booking'] as  $value) {
+            
+            $this->CI->db->insert('ticket', array(
+                'travel_id' => $travel_id,
+                'ticket_status_id' => $this->CI->ModelTicketStatus->select_where_ticket_status_value(TICKET_BOOKING)->row()->id,
+                'ticket_seat' => $value,
+                'ticket_price' => $this->CI->ModelTravel->select_where_id($travel_id)->row()->price,
+                'gender_id' => $gender_id
+            ));
+            $process['ticket_id'] = $this->CI->db->insert_id();
+            
+            $this->CI->db->insert('booking_has_ticket', array(
+                'booking_id' => $process['booking_id'],
+                'ticket_id' => $process['ticket_id']
+            ));
+        }
 
-        $this->CI->ModelRouteHasCarType->delete($routeID);
-        $this->CI->ModelRoute->delete($routeID);
-
-
+        
         if ($this->CI->db->trans_status() === FALSE) {
-
+            
             $this->CI->db->trans_rollback();
             return FALSE;
         } else {
-
+            
             $this->CI->db->trans_commit();
-            return TRUE;
+            return $process['booking_id'];
         }
-    }
-
-    public function editRoute($id, $route, $routeHasCarTypes) {
-
-        $this->CI->db->trans_begin();
-        $this->CI->ModelRoute->update($id, $route);
-
-        foreach ($routeHasCarTypes as $value) {
-
-            $tempValue = $value;
-            unset($tempValue['price']);
-            $row_amout = $this->CI->db->get_where('route_has_car_type', $tempValue)->num_rows();
-            if ($row_amout > 0) {
-
-                $tempValue = $value;
-                unset($tempValue['route_id']);
-                unset($tempValue['car_type_id']);
-                $this->CI->ModelRouteHasCarType->update($value['route_id'], $value['car_type_id'], $tempValue);
-            } else {
-
-                $this->CI->ModelRouteHasCarType->insert($value);
+    }    
+    
+    public function is_free_seat($travel_id) {
+        
+        $tickets = $this->CI->ModelTicket->select_where_travel_id($travel_id);
+        $booking = 0;
+        foreach ($tickets->result() as $row) {
+            
+            if($row->ticket_status_value == TICKET_BOOKING || $row->ticket_status_value == TICKET_SUCCEED){
+                $booking++;
             }
         }
-
-        if ($this->CI->db->trans_status() === FALSE) {
-
-            $this->CI->db->trans_rollback();
-            return FALSE;
-        } else {
-
-            $this->CI->db->trans_commit();
+        $travels = $this->CI->ModelTravel->select_where_id($travel_id);
+        
+        if($booking < $travels->row()->car_type_seat_amount){
+            
             return TRUE;
         }
+        return FALSE;
+    }
+    
+    public function get_date($station_source_id, $station_destination_id) {
+        
+        return $this->CI->ModelTravel->select_travel_define_start_date($station_source_id, $station_destination_id, TRUE);
+    }
+    
+    public function get_station_destination($station_source_id, $province_destination_id) {
+
+        return $this->CI->ModelTravel->select_station_where_station_source_id_and_province_destination_id($station_source_id, $province_destination_id);
+    }
+    
+    public function get_station_source($province_source_id, $province_destination_id) {
+     
+        return $this->CI->ModelTravel->select_station_where_province_source_id_and_province_destination_id($province_source_id, $province_destination_id);
+    }
+    
+    public function get_province_destination($province_source) {
+        
+        return $this->CI->ModelTravel->select_province_destination_where_province_sourc($province_source);
+    }
+    
+    public function get_province_source() {
+        
+        return $this->CI->ModelTravel->select_all_province_source();
+    }
+  
+    
+    
+    
+    
+    
+    public function check_date_time($stamp) {
+        
+        if($this->date_details($stamp- time())->hour < TIME_ALLOW_BOOKING){
+            
+            return FALSE;
+        }
+        return TRUE;
+    }
+    
+    public function date_details($second) {
+
+//        $result['minute'] = round($second / 60);
+//        $result['hour'] = round($second / 3600);
+//        $result['day'] = round($second / 86400);
+//        $result['week'] = round($second / 604800);
+//        $result['month'] = round($second / 2419200);
+//        $result['year'] = round($second / 29030400);
+        $result['second'] = ($second);
+        $result['minute'] = ($second / 60);
+        $result['hour'] = ($second / 3600);
+        $result['day'] = ($second / 86400);
+        $result['week'] = ($second / 604800);
+        $result['month'] = ($second / 2419200);
+        $result['year'] = ($second / 29030400);
+        return $this->array_to_obj($result);
+    }
+    
+    public function array_to_obj($param) {
+
+        return json_decode(json_encode($param), FALSE);
+    }
+    
+    public function get_column($table, $column) {
+        
+        $tmp_array = array();
+        foreach ($table->result_array() as $value) {
+
+            $tmp_array[] = $value[$column];
+        }
+        return $tmp_array;
+    }
+    
+    public function show_array($array){
+        
+        echo '<pre>';
+        print_r($array);
+        echo '</pre>';
+        
     }
 
     public function __construct() {

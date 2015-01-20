@@ -40,13 +40,13 @@ class Onload extends CI_Controller {
             exit('<p>You do not have permission to run.</p>');
         }
         
-        if ($this->ci->ModelUser->isGuest()) {
-            
-            if(!$this->isAllowRequest($request)){
-
-                exit($this->ci->load->view('System/requrie_login',FALSE,TRUE));
-            }
-        }
+//        if ($this->ci->ModelUser->isGuest()) {
+//            
+//            if(!$this->isAllowRequest($request)){
+//
+//                exit($this->ci->load->view('System/requrie_login',FALSE,TRUE));
+//            }
+//        }
         
         
     }

@@ -1,53 +1,34 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- * Description of User
- *
- * @author singha
- */
 class ModelStation extends CI_Model {
 
-    public function status() {
+    public function select_where_id($station_id) {
 
-        $num_inserts = $this->db->affected_rows();
-        $errNo = $this->db->_error_number();
-        $errMess = $this->db->_error_message();
-        $message = '<br>';
-        $message .= 'affected_rows : ' . $num_inserts . '<br>';
-        $message .= 'error number : ' . $errNo . '<br>';
-        $message .= 'error message : ' . $errMess . '<br>';
-        return $message;
-    }
-
-    public function select_where_province_id_and_where_in($province_id, $station_id_array = array()) {
-
-        $this->db->select('*, id AS station_id', FALSE);
+        $this->db->select('
+            *,
+            station.id AS station_id,
+            province.id AS province_id,
+        ');
         $this->db->from('station');
-        $this->db->where('province_id', $province_id);
-        $this->db->where_in('id', $station_id_array);
-
+        $this->db->join('province', 'station.province_id = province.id', 'left');
+        $this->db->where('station.id', $station_id);
+        $this->db->order_by('province.province_name');
         return $this->db->get();
     }
 
-    public function select_where_in($station_id_array = array()) {
+    public function select_where_in($id_station_source = array()) {
 
-        if (count($station_id_array) > 0) {
+        if (count($id_station_source) > 0) {
 
             $this->db->select('*');
             $this->db->from('station');
-            $this->db->where_in('id', $station_id_array);
+            $this->db->where_in('id', $id_station_source);
             $this->db->group_by('id');
         } else {
 
-            $tmp_station = $this->db->get('station')->result();
+            $tmp_tbl = $this->db->get('station')->result();
             $tmp_id = array();
-            foreach ($tmp_station as $value) {
+            foreach ($tmp_tbl as $value) {
                 $tmp_id[] = $value->id;
             }
 
@@ -55,118 +36,9 @@ class ModelStation extends CI_Model {
             $this->db->from('station');
             $this->db->where_not_in('id', $tmp_id);
         }
-        
-        $this->db->order_by('station.station_name');
+
+        $this->db->order_by('station_name');
         return $this->db->get();
-    }
-
-    public function selectByProvice($id) {
-
-        $this->db->select('*,station.id AS station_id');
-        $this->db->from('station');
-        $this->db->join('province', 'station.province_id = province.id', 'left');
-        $this->db->order_by('province_name');
-        $this->db->where('station.province_id', $id);
-
-        return $this->db->get();
-    }
-
-    public function getByProviceNotInRoute($id, $station_destination_id) {
-
-        $this->db->select('*,station.id AS station_id');
-        $this->db->from('station');
-        $this->db->join('province', 'station.province_id = province.id', 'left');
-        $this->db->order_by('province_name');
-        $this->db->where('station.province_id', $id);
-
-        $route = $this->ModelRoute->getByProvice($station_source_id);
-        $stationID = array();
-        foreach ($route->result_array() as $value) {
-
-            array_push($stationID, $value['station_destination']);
-        }
-
-        $this->db->where_not_in('station.id', $stationID);
-
-        return $this->db->get();
-    }
-
-    public function getByProvice($id) {
-
-        $this->db->select('*,station.id AS station_id');
-        $this->db->from('station');
-        $this->db->join('province', 'station.province_id = province.id', 'left');
-        $this->db->order_by('province_name');
-        $this->db->where('station.province_id', $id);
-
-        return $this->db->get();
-    }
-
-    public function getAll() {
-
-        $this->db->select('*,station.id AS station_id');
-        $this->db->from('station');
-        $this->db->join('province', 'station.province_id = province.id', 'left');
-        $this->db->order_by('province_name');
-
-        return $this->db->get();
-    }
-
-    public function getStation($id) {
-
-        $this->db->select('*,station.id AS station_id');
-        $this->db->from('station');
-        $this->db->join('province', 'station.province_id = province.id', 'left');
-        $this->db->order_by('province_name');
-        $this->db->where('station.id', $id);
-
-        return $this->db->get();
-    }
-
-    public function select() {
-
-        $this->db->select('*,station.id AS station_id');
-        $this->db->from('station');
-        $this->db->join('province', 'station.province_id = province.id', 'left');
-        $this->db->order_by('province_name');
-
-        return $this->db->get();
-    }
-
-    public function insert($data) {
-
-        if ($this->db->insert('station', $data)) {
-
-            return TRUE;
-        }
-        return FALSE;
-    }
-
-    public function multiInsert($data) {
-
-        if ($this->db->insert_batch('station', $data)) {
-
-            return TRUE;
-        }
-        return FALSE;
-    }
-
-    public function update($id, $data) {
-
-        if ($this->db->update('station', $data, array('id' => $id))) {
-
-            return TRUE;
-        }
-        return FALSE;
-    }
-
-    public function delete($id) {
-
-        if ($this->db->delete('station', array('id' => $id))) {
-
-            return TRUE;
-        }
-        return FALSE;
     }
 
     public function __construct() {

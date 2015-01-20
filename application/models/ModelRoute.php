@@ -1,147 +1,54 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- * Description of User
- *
- * @author singha
- */
 class ModelRoute extends CI_Model {
+    
+    public function select() {
+        
+//        $this->db->select('
+//            route.id AS route_id,
+//            route.active AS route_active,
+//            route.route_distance AS route_route_distance,
+//            route.route_map AS route_route_map,
+//            route.route_details AS route_route_details,
+//            route.station_source AS route_station_source,
+//            route.station_destination AS route_station_destination,
+//            
+//            st_sour.id AS station_source_id,
+//            st_sour.active AS station_source_active,
+//            st_sour.station_name AS station_source_station_name,
+//            st_sour.station_details AS station_source_station_details,
+//            st_sour.station_img AS station_source_station_img,
+//            st_sour.province_id AS station_source_province_id,
+//            
+//            st_dest.id AS station_destination_id,
+//            st_dest.active AS station_destination_active,
+//            st_dest.station_name AS station_destination_station_name,
+//            st_dest.station_details AS station_destination_station_details,
+//            st_dest.station_img AS station_destination_station_img,
+//            st_dest.province_id AS station_destination_province_id,
+//            
+//            pr_sour.id AS province_source_id,
+//            pr_sour.province_code AS province_source_province_code,
+//            pr_sour.province_name AS province_source_province_name,
+//            pr_sour.province_name_en AS province_source_province_name_en,
+//            pr_sour.province_geo_id AS province_source_province_geo_id,
+//            
+//            pr_dest.id AS province_destination_id,
+//            pr_dest.province_code AS province_destination_province_code,
+//            pr_dest.province_name AS province_destination_province_name,
+//            pr_dest.province_name_en AS province_destination_province_name_en,
+//            pr_dest.province_geo_id AS province_destination_province_geo_id,
+//        ', FALSE);
+        $this->db->from('route');
+        $this->db->join('station AS st_sour', 'route.station_source = st_sour.id', 'left');
+        $this->db->join('station AS st_dest', 'route.station_destination = st_dest.id', 'left');
+        $this->db->join('province AS pr_sour', 'st_sour.province_id = pr_sour.id', 'left');
+        $this->db->join('province AS pr_dest', 'st_dest.province_id = pr_dest.id', 'left');
+        
+        return $this->db->get();
+    }
 
     public function __construct() {
 
         parent::__construct();
     }
-    
-    public function select_station_destination() {
-
-        $this->db->select('*', FALSE);        
-        $this->db->from('route');
-        $this->db->group_by('station_destination');
-        
-        return $this->db->get();
-    }
-    
-    public function select_station_source() {
-
-        $this->db->select('*', FALSE);        
-        $this->db->from('route');
-        $this->db->group_by('station_source');
-        
-        return $this->db->get();
-    }
-    
-    public function select() {
-
-        $this->db->select('
-            *,
-            route.id AS route_id, 
-            
-            tbl_station_source.province_id AS province_source_id,
-            tbl_station_destination.province_id AS province_destination_id, 
-            
-            tbl_province_source.province_name AS province_source_name,
-            tbl_province_destination.province_name AS province_destination_name,
-            
-            tbl_station_source.station_name AS station_source_name,
-            tbl_station_destination.station_name AS station_destination_name
-            ', FALSE);        
-        $this->db->from('route');
-        $this->db->join('station AS tbl_station_source', 'route.station_source = tbl_station_source.id', 'left');
-        $this->db->join('station AS tbl_station_destination', 'route.station_destination = tbl_station_destination.id', 'left');
-        $this->db->join('province AS tbl_province_source', 'tbl_province_source.id = tbl_station_source.province_id', 'left');
-        $this->db->join('province AS tbl_province_destination', 'tbl_province_destination.id = tbl_station_destination.province_id', 'left');
-        $this->db->order_by('tbl_province_source.province_name');
-        
-        return $this->db->get();        
-    }
-    
-    public function getAll() {
-
-        $this->db->select('
-            *,
-            route.id AS route_id, 
-            CONCAT(tbl_province_source.province_name, " - ", tbl_station_source.station_name) AS station_source_name,
-            CONCAT(tbl_province_destination.province_name, " - ", tbl_station_destination.station_name) AS station_destination_name,
-            tbl_station_source.province_id AS province_source_id,
-            tbl_station_destination.province_id AS province_destination_id
-            ', FALSE);        
-        $this->db->from('route');
-        $this->db->join('station AS tbl_station_source', 'route.station_source = tbl_station_source.id', 'left');
-        $this->db->join('station AS tbl_station_destination', 'route.station_destination = tbl_station_destination.id', 'left');
-        $this->db->join('province AS tbl_province_source', 'tbl_province_source.id = tbl_station_source.province_id', 'left');
-        $this->db->join('province AS tbl_province_destination', 'tbl_province_destination.id = tbl_station_destination.province_id', 'left');
-//        $this->db->join('route_has_car_type', 'route.id = route_has_car_type.route_id', 'left');
-//        $this->db->join('car_type', 'route_has_car_type.car_type_id = car_type.id', 'left');
-        $this->db->order_by('tbl_province_source.province_name');
-        
-//        $sub = $this->subquery->start_subquery('select');
-//        $sub->select('car_type_id')->from('route_has_car_type');
-//        $sub->where('route.id', 'route_has_car_type.route_id');
-//        $this->subquery->end_subquery('car_type_id','ไม่มีค่า');
-        
-        return $this->db->get();        
-    }
-
-    public function get($id) {
-        
-        $this->db->select('
-            *,
-            route.id AS route_id, 
-            CONCAT(tbl_province_source.province_name, " - ", tbl_station_source.station_name) AS station_source_name,
-            CONCAT(tbl_province_destination.province_name, " - ", tbl_station_destination.station_name) AS station_destination_name,
-            tbl_station_source.province_id AS province_source_id,
-            tbl_station_destination.province_id AS province_destination_id
-            ', FALSE);        
-        $this->db->from('route');
-        $this->db->join('station AS tbl_station_source', 'route.station_source = tbl_station_source.id', 'left');
-        $this->db->join('station AS tbl_station_destination', 'route.station_destination = tbl_station_destination.id', 'left');
-        $this->db->join('province AS tbl_province_source', 'tbl_province_source.id = tbl_station_source.province_id', 'left');
-        $this->db->join('province AS tbl_province_destination', 'tbl_province_destination.id = tbl_station_destination.province_id', 'left');
-        $this->db->where('route.id', $id);
-
-        return $this->db->get();
-    }
-
-    public function insert($data) {
-
-        if ($this->db->insert('route', $data)) {
-
-            return TRUE;
-        }
-        return FALSE;
-    }
-
-    public function update($id, $data) {
-
-        if ($this->db->update('route', $data, array('id' => $id))) {
-
-            return TRUE;
-        }
-        return FALSE;
-    }
-
-    public function delete($id) {
-
-        if ($this->db->delete('route', array('id' => $id))) {
-
-            return TRUE;
-        }
-        return FALSE;
-    }
-    
-    public function getByProvice($id) {
-        
-        $this->db->select('*,route.id AS route_id');
-        $this->db->from('route');
-        $this->db->where('route.station_source', $id);
-        
-        return $this->db->get();
-    }
-
 }

@@ -8,11 +8,17 @@
         <link href="assets/jquery-ui-1.11.2.custom/jquery-ui.css" rel="stylesheet" type="text/css"/>
         <link href="assets/tkahn-Smooth-Div-Scroll-1c3b3a6/css/smoothDivScroll.css" rel="stylesheet" type="text/css"/>
         <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-        <script src="http://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        <link href="assets/van/van.css" rel="stylesheet" type="text/css"/>
+        <link href="assets/css/theme1.css" rel="stylesheet" type="text/css"/>
+
         <script src="assets/js/jquery.js" type="text/javascript"></script>
         <script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="assets/js/ajax.js" type="text/javascript"></script>
         <script src="assets/jquery-ui-1.11.2.custom/jquery-ui.min.js" type="text/javascript"></script>
+        <script src="assets/js/jqueryui_datepicker_thai.js" type="text/javascript"></script>
+        <script src="assets/van/van.js" type="text/javascript"></script>
+        <!--<script src="http://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>-->
+        <script src="assets/js/ajax.js" type="text/javascript"></script>
+
         <script src="assets/tkahn-Smooth-Div-Scroll-1c3b3a6/js/jquery.mousewheel.min.js" type="text/javascript"></script>
         <script src="assets/tkahn-Smooth-Div-Scroll-1c3b3a6/js/jquery.kinetic.min.js" type="text/javascript"></script>
         <script src="assets/tkahn-Smooth-Div-Scroll-1c3b3a6/js/jquery.smoothdivscroll-1.3-min.js" type="text/javascript"></script>
@@ -33,10 +39,11 @@
 
 
             });
-            
-            $(function(){
-               
-               $("#page-left").load("TicketBooking/index");
+
+            $(function() {
+
+                $("#page-left").load("TicketBooking/index");
+                $("#page-right").load("Comment/index");
             });
 
 
@@ -50,7 +57,8 @@
                 position: relative;
             }
 
-            #makeMeScrollable div.scrollableArea img
+            #makeMeScrollable div.scrollableArea img,
+            #makeMeScrollable div.scrollableArea a
             {
                 position: relative;
                 float: left;
@@ -97,8 +105,7 @@
     <body style=" background-color: #000;">
         <!--        <div id="google_translate_element"></div>-->
 
-
-        <div class="container">
+        <div class="container" style=" background-color: #fff; box-shadow: 0px 0px 1000px #00c0ff;">
 
             <div class="well gd" style=" text-align: center;">
                 <!--<img height="100" src="assets/images/Logo1.png" alt=""/>-->
@@ -133,7 +140,7 @@
             </nav>
 
             <div class="row">
-                <div class="col-sm-12">
+                <div class="col-md-12">
                     <div id="makeMeScrollable">
                         <img src="assets/images/show/location1.jpg" alt=""/>
                         <img src="assets/images/show/van1.png" alt=""/>
@@ -149,8 +156,8 @@
 
             <br>
             <div class="row" id="container">
-                <div class="col-sm-6" id="page-left"></div>
-                <div class="col-sm-6" id="page-right">
+                <div class="col-md-6" id="page-left"></div>
+                <div class="col-md-6" id="page-right">
                     <form class="well">
                         <h4>ความคิดเห็น</h4>
                     </form>
@@ -159,5 +166,20 @@
         </div>
 
 
+        <div id="my_modal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <span class="glyphicon glyphicon-remove-sign" data-dismiss="modal" style="cursor: pointer; margin: 10px; position: absolute; z-index: 90; right: 0px; font-size: 15px;"></span>
+                    <div class="modal-body"  id="my_modal_content"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="my_modal_sm" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content" id="my_modal_sm_content"></div>
+            </div>
+        </div>
     </body>
+
 </html>

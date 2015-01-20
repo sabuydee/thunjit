@@ -1,16 +1,4 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- * Description of User
- *
- * @author singha
- */
 class ModelProvince extends CI_Model {
 
     public function status() {
@@ -50,9 +38,9 @@ class ModelProvince extends CI_Model {
         return $this->db->get();
     }
 
-    public function getAll() {
+    public function select_where_id($provice_id) {
 
-        $this->db->order_by('province.province_name');
+        $this->db->where('id', $provice_id);
         return $this->db->get('province');
     }
 
