@@ -1,8 +1,8 @@
 <form id="form_booking" action="Booking/seat_booking">
-    
+
     <div id="box_form_booking_load"></div>
     <div id="box_form_booking_result"></div>
-    
+
     <div id="box_form_booking">
         <input type="hidden" id="travel_id" name="travel_id" value="<?= $travel_id ?>">
 
@@ -130,7 +130,7 @@
         $("#form_booking #box_date").html(res.travel_define_start.toDate().getDateTh());
         $("#form_booking #box_time").html(res.travel_define_start.toDate().getTime());
         $("#form_booking #box_car_type").html(res.car_type_name);
-        $("#form_booking #box_price").html(res.price);
+        $("#form_booking #box_price").html(res.route_has_car_type_price);
 
         if (parseInt(res.car_type_id) == 1) {
             $.fn.van.type = "van14";
@@ -143,7 +143,8 @@
             var booking = [];
             res.forEach(function(row) {
 
-                booking.push(parseInt(row.ticket_seat));
+                if (row.ticket_status_value != "ticket_cancel")
+                    booking.push(parseInt(row.ticket_seat));
             });
             $("#form_booking #van").van({fix: booking});
         });
@@ -191,27 +192,27 @@
                 alert(message);
                 return false;
             }
-            
+
             var num_seat = $("#form_booking #seat_booking").val().split(",");
-            if(!confirm("คุณได้เลือกที่นั่งทั่งหมด " + num_seat.length + " ที่นั่ง")){
+            if (!confirm("คุณได้เลือกที่นั่งทั่งหมด " + num_seat.length + " ที่นั่ง")) {
                 return false;
             }
-            
-            $.post($(this).attr("action"), $(this).serialize(), function(res, status) {
+
+            $.post($(this).attr("action"), $(this).serialize(), function(res) {
 
                 $("#form_booking #box_form_booking").hide();
                 $("#form_booking #box_form_booking_load").html(get_loader());
-                
+
                 result = JSON.parse(res);
                 if (result.status != "succeed") {
-                    
+
                     alert("ไม่สามารถทำการจองตั๋วได้ในขณะนี้ กรุณาปิดแล้วเรียกหน้านี้ใหม่อีกครั้งขอบคุณครับ");
                     $("#form_booking #box_form_booking").show();
                     $("#form_booking #box_form_booking_load").html("");
                 } else {
-                    
+
                     $("#form_booking #box_form_booking_load").html("");
-                    $("#form_booking #box_form_booking_result").load("BookingResult/index/" + result.data.booking_id, function(){
+                    $("#form_booking #box_form_booking_result").load("BookingResult/index/" + result.data.booking_id, function() {
                         $("#form_booking #box_form_booking_result").prepend($("#form_booking #travel_details").clone());
                         alert("*** ทำรายการสำเร็จ *** \nกรุณากดตกลง และปฏิบัติตามรายละเอียดที่ประกฏหน้าจอของคุณครับ");
                     });

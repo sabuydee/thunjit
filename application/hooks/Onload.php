@@ -35,10 +35,10 @@ class Onload extends CI_Controller {
         $method = $this->ci->router->method;
         $request = strtolower($class . '/' . $method);
 
-        if (!$this->isAjax($request)) {
-
-            exit('<p>You do not have permission to run.</p>');
-        }
+//        if (!$this->isAjax($request)) {
+//
+//            exit('<p>You do not have permission to run.</p>');
+//        }
         
 //        if ($this->ci->ModelUser->isGuest()) {
 //            

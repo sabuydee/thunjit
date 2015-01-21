@@ -50,7 +50,7 @@
             $("#box_travels").html($("#box_travels").html() + '<tr><td id="car_type' + row.travel_id + '"></td><td id="time' + row.travel_id + '"><td id="price' + row.travel_id + '"></td><td id="control' + row.travel_id + '" style=" text-align: right;"></td></tr>');
             $("#box_travels #car_type" + row.travel_id).html(row.car_type_name);
             $("#box_travels #time" + row.travel_id).html(row.travel_define_start.toDate().getTime() + " น.");
-            $("#box_travels #price" + row.travel_id).html(row.price + " บาท / ที่นั่ง");
+            $("#box_travels #price" + row.travel_id).html(row.route_has_car_type_price + " บาท / ที่นั่ง");
             $.get("SelectTravel/is_free_seat/" + row.travel_id, function(res) {
                 
                 if (JSON.parse(res)) {
